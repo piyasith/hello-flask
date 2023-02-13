@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  app:
+    build: ./services/app
+    restart: always
+    command: gunicorn --bind 0.0.0.0:5000 -w 3 run:app
+    volumes:
+      - ./services/app/:/hello
+    ports:
+      - 5000
+    env_file:
+      - ./.taskenv
+    depends_on:
+      - proxy
+    networks:
+      - local-network
+
+  database:
+    build: ./services/database
+    restart: always
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    ports:
+      - 5432
+    networks:
+      - local-network
+
+  proxy:
+    build: ./services/proxy
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      - local-network
+
+volumes:
+  pg_data:
+
+networks:
+  local-network:

@@ -1,0 +1,4 @@
+FROM postgres:15.2-alpine
+ENV POSTGRES_USER dbuser
+ENV POSTGRES_PASSWORD 1qaz!QAZ
+ENV POSTGRES_DB postgres_db
